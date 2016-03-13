@@ -3,7 +3,7 @@ title: "PA1_template"
 output: html_document
 ---
 
-Reading the data into activity data frame and show some summary statistics
+# Reading the data into activity data frame and show some summary statistics
 
 activity <- read.csv("data/activity.csv", stringsAsFactors=FALSE)
 str(activity)
@@ -15,7 +15,7 @@ library(lubridate)
 activity$date <- ymd(activity$date)
 
 str(activity)
-What is the average daily activity pattern?
+# What is the average daily activity pattern?
 
 1. Calculate the total number of steps taken per day (ignore the missing values)
 
@@ -42,7 +42,7 @@ mean_steps <- mean(total_day$total_steps,na.rm=TRUE)
 median_steps <- median(total_day$total_steps,na.rm=TRUE)
 Mean and median of the total number of steps taken per day are r round(mean_steps,2) steps and r median_steps steps, respectively.
 
-What is the average daily activity pattern?
+# What is the average daily activity pattern?
 
 1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
@@ -58,7 +58,7 @@ axis(1,labels=daily_patterns$interval[seq(1,288,12)],
 max_numb_steps_interval <- filter(daily_patterns,average==max(average))
 Interval "r max_numb_steps_interval$interval" contains on average the maximum number of steps (r round(max_numb_steps_interval$average,2) steps).
 
-Imputing missing values
+# Imputing missing values
 
 1. Calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs)
 
@@ -102,7 +102,7 @@ legend(legend="median","topright",lty=3,lwd=2,bty = "n")
 summary(total_day_noNAs$total_steps)
 Imputing missing values, mean of the total number of steps taken per day increased while median decreased,compared to estimates from the first part (ingoring missing values). Imputing missing data resulted in increase of total daily number of steps (instead of each NAs we have average that is always >=0)
 
-Are there differences in activity patterns between weekdays and weekends?
+# Are there differences in activity patterns between weekdays and weekends?
 
 1. Create a new factor variable in the dataset with two levels - "weekday" and "weekend" indicating whether a given date is a weekday or weekend day
 

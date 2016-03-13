@@ -2,19 +2,9 @@ Reading the data into activity data frame and show some summary statistics
 
 activity <- read.csv("Reproducible-Research/activity.csv", stringsAsFactors=FALSE)
 str(activity)
-## 'data.frame':    17568 obs. of  3 variables:
-##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ date    : chr  "2012-10-01" "2012-10-01" "2012-10-01" "2012-10-01" ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+
 summary(activity)
-##      steps            date              interval     
-##  Min.   :  0.00   Length:17568       Min.   :   0.0  
-##  1st Qu.:  0.00   Class :character   1st Qu.: 588.8  
-##  Median :  0.00   Mode  :character   Median :1177.5  
-##  Mean   : 37.38                      Mean   :1177.5  
-##  3rd Qu.: 12.00                      3rd Qu.:1766.2  
-##  Max.   :806.00                      Max.   :2355.0  
-##  NA's   :2304
+
 Convert date to POSIXct class using lubridate package and convert interval to hour:minute format
 
 library(lubridate)
@@ -22,30 +12,14 @@ library(lubridate)
 activity$date <- ymd(activity$date)
 
 str(activity)
-## 'data.frame':    17568 obs. of  3 variables:
-##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
-##  $ date    : POSIXct, format: "2012-10-01" "2012-10-01" ...
-##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
+
 What is the average daily activity pattern?
 
 1. Calculate the total number of steps taken per day (ignore the missing values)
 
 require(dplyr)
 total_day <- activity %>% group_by(date) %>%summarise(total_steps=sum(steps,na.rm=TRUE),na=mean(is.na(steps))) %>% print
-## Source: local data frame [61 x 3]
-## 
-##          date total_steps na
-## 1  2012-10-01           0  1
-## 2  2012-10-02         126  0
-## 3  2012-10-03       11352  0
-## 4  2012-10-04       12116  0
-## 5  2012-10-05       13294  0
-## 6  2012-10-06       15420  0
-## 7  2012-10-07       11015  0
-## 8  2012-10-08           0  1
-## 9  2012-10-09       12811  0
-## 10 2012-10-10        9900  0
-## ..        ...         ... ..
+
 Visualise the total number of steps taken per day as a barplot
 
 barplot(height = total_day$total_steps,names.arg=total_day$date,cex.names=0.68,las=3,col="orange")
@@ -122,13 +96,7 @@ for (i in 1:nrow(activity))
 }
 activity_without_NAs<-mutate(activity,steps_no_NAs=without_NAs)
 head(activity_without_NAs)
-##   steps       date interval steps_no_NAs
-## 1    NA 2012-10-01        0     1.716981
-## 2    NA 2012-10-01        5    0.3396226
-## 3    NA 2012-10-01       10    0.1320755
-## 4    NA 2012-10-01       15    0.1509434
-## 5    NA 2012-10-01       20    0.0754717
-## 6    NA 2012-10-01       25      2.09434
+
 Below code is just to verify if process of imputing missing values correctly preserved original values (lines with no NAs)
 
 check <- filter(activity_without_NAs,!is.na(steps)) %>% mutate(ok = (steps==steps_no_NAs))
